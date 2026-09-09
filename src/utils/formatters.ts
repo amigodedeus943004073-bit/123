@@ -1,10 +1,9 @@
 export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  const num = (amount || 0).toLocaleString('pt-PT', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount || 0);
+  });
+  return `${num} Kz`;
 };
 
 export const formatNumber = (amount: number): string => {
@@ -83,21 +82,16 @@ export const formatPercentage = (val: number): string => {
   return `${sign}${val.toFixed(1)}%`;
 };
 
-export const formatInvoiceCurrency = (amount: number, currency: string = 'BRL'): string => {
-  const cleanCurrency = currency?.toUpperCase() || 'BRL';
-  try {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: cleanCurrency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount || 0);
-  } catch {
-    return `${cleanCurrency} ${(amount || 0).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+export const formatInvoiceCurrency = (amount: number, currency: string = 'AOA'): string => {
+  const cleanCurrency = (!currency || currency.toUpperCase() === 'BRL') ? 'AOA' : currency.toUpperCase();
+  const num = (amount || 0).toLocaleString('pt-PT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  if (cleanCurrency === 'AOA' || cleanCurrency === 'KZ') {
+    return `${num} Kz`;
   }
+  return `${cleanCurrency} ${num}`;
 };
 
 export const getInvoiceTypeLabel = (type: string): string => {

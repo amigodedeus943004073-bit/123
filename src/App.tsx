@@ -15,6 +15,7 @@ import {
   getSavedEmitterSettings,
   saveEmitterSettings,
   resetToInitialData,
+  zeroAllFinances,
   calculateAccountBalances,
   computeCashFlowTimeline,
 } from './utils/storage';
@@ -43,6 +44,7 @@ import { InvoicesManagerModal } from './components/InvoicesManagerModal';
 import { InvoiceModal } from './components/InvoiceModal';
 import { InvoiceViewerModal } from './components/InvoiceViewerModal';
 import { BiblicalStewardshipBanner } from './components/BiblicalStewardshipBanner';
+import { SMVMLogo } from './components/SMVMLogo';
 import { INITIAL_TRANSACTIONS } from './data/initialData';
 import { getMonthName, formatCurrency } from './utils/formatters';
 import {
@@ -448,6 +450,17 @@ export default function App() {
     showToast('Dados restaurados para o padrão com sucesso!');
   };
 
+  // Zero all accounts, expenses, revenues, and invoices
+  const handleZeroAllFinances = () => {
+    zeroAllFinances();
+    setAccounts(getSavedAccounts());
+    setCategories(getSavedCategories());
+    setTransactions([]);
+    setInvoices([]);
+    setAutomations([]);
+    showToast('Todas as contas e despesas foram zeradas com sucesso (Saldo Kz 0,00)!');
+  };
+
   // Invoice Handlers
   const handleSaveInvoice = (newInvoice: Invoice, syncToCashFlow: boolean) => {
     let linkedTxId = newInvoice.linkedTransactionId;
@@ -622,7 +635,7 @@ export default function App() {
         saveAccounts(updated);
         return updated;
       });
-      showToast('Lançamentos limpos e saldos zerados com sucesso (R$ 0,00)!');
+      showToast('Lançamentos limpos e saldos zerados com sucesso (Kz 0,00)!');
     } else {
       showToast('Todos os lançamentos foram limpos. Caixa pronto para novos registros!');
     }
@@ -663,6 +676,7 @@ export default function App() {
         alertCount={alerts.length}
         onOpenAlerts={() => setIsAlertsOpen(true)}
         pendingInvoicesCount={pendingInvoicesCount}
+        onZeroAll={handleZeroAllFinances}
       />
 
       {/* Main Container */}
@@ -871,6 +885,35 @@ export default function App() {
           />
         </div>
       </main>
+
+      {/* Institutional Footer */}
+      <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-xs text-slate-500 no-print">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <SMVMLogo size="sm" />
+            <div>
+              <p className="font-bold text-slate-800">
+                Salomão Muanjita Vinene Moises (SMVM)
+              </p>
+              <p className="text-[11px] text-slate-400">
+                Sistema Integrado de Gestão Financeira, Fluxo de Caixa & Facturação
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-slate-500 text-[11px]">
+            <span className="font-semibold text-slate-700">NIF: 5002504642</span>
+            <span>•</span>
+            <span>Cuito - Bié (Bairro Fátima)</span>
+            <span>•</span>
+            <span>Tel: 944449026 / 943004073</span>
+            <span>•</span>
+            <span className="text-emerald-600 font-semibold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Operacional
+            </span>
+          </div>
+        </div>
+      </footer>
 
       {/* Modals */}
       <TransactionModal

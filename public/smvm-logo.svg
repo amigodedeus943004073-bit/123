@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 540" width="100%" height="100%">
+  <defs>
+    <!-- Royal electric blue matching original emblem -->
+    <linearGradient id="primaryBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0035ef" />
+      <stop offset="100%" stop-color="#0022d6" />
+    </linearGradient>
+
+    <!-- Deep shadow blue for right-hand dimension/facets -->
+    <linearGradient id="shadeBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#001488" />
+      <stop offset="100%" stop-color="#000e62" />
+    </linearGradient>
+
+    <clipPath id="logoClip">
+      <rect width="820" height="540" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#logoClip)">
+    <!-- 1. The Large Stylized 'S' (Salomão) -->
+    <!-- Top loop of S, going up and curving around with inner teardrop hole -->
+    <path 
+      d="M 330 255
+         C 300 255 272 235 258 200
+         C 240 155 242 85 275 42
+         C 305 2 375 0 405 38
+         C 438 80 435 155 408 205
+         C 392 235 365 255 330 255 Z
+         M 335 65
+         C 318 65 305 85 300 120
+         C 292 165 305 200 328 200
+         C 350 200 368 175 372 135
+         C 376 95 360 65 335 65 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- Lower curve & bottom tail of S -->
+    <path 
+      d="M 270 230
+         C 230 230 200 250 185 285
+         C 170 325 180 375 210 420
+         C 245 470 325 485 380 455
+         C 425 430 435 380 415 345
+         C 395 315 355 320 345 345
+         C 338 362 350 380 368 380
+         C 378 380 384 388 380 398
+         C 370 422 315 435 275 405
+         C 240 380 232 335 248 295
+         C 260 268 285 255 315 255
+         C 310 242 295 230 270 230 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- 2. The Horizontal Orbital Saturn Ring -->
+    <path 
+      d="M 40 290
+         C 35 275 75 252 145 238
+         C 190 230 250 228 320 232
+         C 420 238 560 252 680 272
+         C 750 284 785 298 775 312
+         C 760 332 685 346 565 348
+         C 435 350 280 342 175 330
+         C 95 320 45 305 40 290 Z
+         M 135 285
+         C 112 285 102 292 120 298
+         C 150 306 220 308 280 304
+         C 285 292 270 285 240 284
+         C 195 282 155 283 135 285 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- 3. The 'mm' Arches (Muanjita & Moises) -->
+    <!-- First 'm' (two arches) -->
+    <path 
+      d="M 390 170
+         C 405 140 435 125 465 145
+         C 490 125 525 125 550 150
+         C 555 160 558 190 556 265
+         L 518 265
+         C 520 215 520 178 512 162
+         C 506 150 492 150 484 162
+         C 476 178 476 215 476 265
+         L 440 265
+         C 442 215 442 178 435 162
+         C 428 150 415 152 408 168
+         C 400 190 398 225 398 265
+         L 362 265
+         C 362 230 368 192 390 170 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- Second 'm' (two arches) -->
+    <path 
+      d="M 552 150
+         C 568 125 600 122 628 145
+         C 652 122 690 120 722 145
+         C 750 168 755 205 750 258
+         C 745 280 735 292 720 292
+         C 705 292 698 275 700 255
+         C 705 210 702 172 690 158
+         C 682 148 668 148 658 158
+         C 648 172 648 210 644 265
+         L 608 265
+         C 610 218 610 175 602 160
+         C 596 148 584 148 576 160
+         C 568 175 566 215 566 265
+         L 532 265
+         C 534 218 534 175 552 150 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- 4. The Capital Sans-Serif 'V' (Vinene - centered below the mm) -->
+    <path 
+      d="M 525 372
+         L 556 372
+         L 582 458
+         L 602 458
+         L 630 372
+         L 660 372
+         L 614 485
+         L 568 485 Z"
+      fill="url(#primaryBlue)"
+    />
+
+    <!-- 5. Shading Highlights & Depths (Darker blue facets as seen on original image) -->
+    <!-- Shading on S lower hook -->
+    <path 
+      d="M 335 440
+         C 370 435 405 405 415 370
+         C 405 350 380 345 365 360
+         C 355 370 365 385 375 385
+         C 360 415 320 425 295 410
+         C 310 428 322 436 335 440 Z"
+      fill="url(#shadeBlue)"
+      opacity="0.85"
+    />
+
+    <!-- Shading on Right Side of the Second 'm' arch and leg -->
+    <path 
+      d="M 685 155
+         C 705 170 710 205 706 255
+         C 715 255 725 240 728 220
+         C 735 180 720 150 685 155 Z"
+      fill="url(#shadeBlue)"
+      opacity="0.75"
+    />
+
+    <!-- Shading on right side of the V -->
+    <path 
+      d="M 588 458
+         L 602 458
+         L 630 372
+         L 645 372
+         L 614 485
+         L 598 485 Z"
+      fill="url(#shadeBlue)"
+      opacity="0.65"
+    />
+
+    <!-- Shading along right side of the horizontal ring -->
+    <path 
+      d="M 530 348
+         C 645 345 735 330 775 312
+         C 755 325 680 340 560 346
+         L 530 348 Z"
+      fill="url(#shadeBlue)"
+      opacity="0.7"
+    />
+  </g>
+</svg>

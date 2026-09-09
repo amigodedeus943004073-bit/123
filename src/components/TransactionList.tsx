@@ -470,7 +470,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               <th className="py-3 px-4">Conta Bancária</th>
               <th className="py-3 px-4">Forma</th>
               <th className="py-3 px-4 text-center">Status / Baixa</th>
-              <th className="py-3 px-4 text-right">Valor (R$)</th>
+              <th className="py-3 px-4 text-right">Valor (Kz)</th>
               <th className="py-3 px-4 text-center">Ações</th>
             </tr>
           </thead>

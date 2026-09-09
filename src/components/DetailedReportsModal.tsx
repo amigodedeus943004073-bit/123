@@ -33,6 +33,7 @@ import {
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { shareViaWhatsApp, formatFinancialReportWhatsApp } from '../utils/whatsapp';
 import { getVerseOfTheDay, BIBLICAL_FINANCIAL_VERSES } from '../data/biblicalVerses';
+import { SMVMLogo } from './SMVMLogo';
 
 interface DetailedReportsModalProps {
   isOpen: boolean;
@@ -392,9 +393,7 @@ export const DetailedReportsModal: React.FC<DetailedReportsModalProps> = ({
         {/* Modal Header */}
         <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50 no-print">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
-              <FileText className="w-5 h-5" />
-            </div>
+            <SMVMLogo size="md" />
             <div>
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Relatórios Financeiros & Prestação de Contas SMVM
@@ -559,6 +558,25 @@ export const DetailedReportsModal: React.FC<DetailedReportsModalProps> = ({
 
         {/* Modal Body / Report Content */}
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+          {/* Print-only official header */}
+          <div className="hidden print-only pb-4 mb-4 border-b-2 border-slate-900">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <SMVMLogo size="lg" />
+                <div>
+                  <h1 className="text-lg font-black text-slate-900 tracking-tight">
+                    SALOMÃO MUANJITA VINENE MOISES (SMVM)
+                  </h1>
+                  <p className="text-xs text-slate-600 font-semibold">
+                    Relatório Financeiro & Prestação de Contas Oficial • NIF: 5002504642 • Cuito - Bié (Bairro Fátima), Angola
+                  </p>
+                </div>
+              </div>
+              <div className="text-right text-xs text-slate-500 font-mono">
+                Emitido em: {formatDate(new Date().toISOString())}
+              </div>
+            </div>
+          </div>
           {/* TAB 0: PERIODIC REPORTS (Diário, Semanal, Mensal, Anual) */}
           {activeReport === 'periodic' && (
             <div className="space-y-6">

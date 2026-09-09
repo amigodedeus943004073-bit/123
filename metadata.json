@@ -1,6 +1,6 @@
 {
   "name": "SMVM - Gestão Financeira e Fluxo de Caixa",
-  "description": "Sistema intuitivo e automatizado de gestão financeira da SMVM para controle de fluxo de caixa, emissão de facturas, monitoramento em tempo real e relatórios detalhados.",
+  "description": "Sistema de gestão financeira e fluxo de caixa da empresa Salomão Muanjita Vinene Moises (SMVM) com emissão de facturas, monitoramento em tempo real e conciliação bancária.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

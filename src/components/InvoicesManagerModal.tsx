@@ -30,6 +30,7 @@ import {
   getInvoiceTypeLabel,
   getInvoiceStatusLabel,
 } from '../utils/formatters';
+import { SMVMLogo } from './SMVMLogo';
 
 interface InvoicesManagerModalProps {
   isOpen: boolean;
@@ -132,9 +133,7 @@ export const InvoicesManagerModal: React.FC<InvoicesManagerModalProps> = ({
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs">
-              <FileText className="w-5 h-5" />
-            </div>
+            <SMVMLogo size="md" />
             <div>
               <h2 className="text-base font-bold text-slate-900">
                 Gestão & Emissão de Facturas
@@ -467,6 +466,41 @@ export const InvoicesManagerModal: React.FC<InvoicesManagerModalProps> = ({
                 </div>
               )}
 
+              {/* Official SMVM Logo Card */}
+              <div className="p-4 bg-slate-900 text-white rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-800 shadow-xs">
+                <div className="flex items-center gap-4">
+                  <div className="h-16 w-24 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 shadow-sm border border-slate-700">
+                    <img
+                      src="/smvm-logo.png"
+                      alt="Logótipo Oficial SMVM"
+                      className="w-full h-full object-contain"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider block">
+                      Identidade Visual Oficial (Sem Alterações)
+                    </span>
+                    <h3 className="text-sm font-bold text-white">
+                      Logótipo SMVM Original
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      Fiel à imagem original fornecida: mantido exatamente sem modificações no emblema.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <a
+                    href="/smvm-logo.png"
+                    download="logotipo_smvm.png"
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                  >
+                    Descarregar Imagem
+                  </a>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -574,24 +608,26 @@ export const InvoicesManagerModal: React.FC<InvoicesManagerModalProps> = ({
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Conta / IBAN / Agência
+                    IBAN / Conta Bancária
                   </label>
                   <input
                     type="text"
                     value={emitterForm.ibanOrAccount}
                     onChange={(e) => setEmitterForm({ ...emitterForm, ibanOrAccount: e.target.value })}
+                    placeholder="Ex: AO06 0040 0000 8953 6571 101 24"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono text-slate-900 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Chave PIX / Código SWIFT
+                    Multicaixa Express / Titular
                   </label>
                   <input
                     type="text"
                     value={emitterForm.swiftOrPix || ''}
                     onChange={(e) => setEmitterForm({ ...emitterForm, swiftOrPix: e.target.value })}
+                    placeholder="Ex: Express: 943004073 • Titular: Salomão Muanjita"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-mono text-slate-900 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>

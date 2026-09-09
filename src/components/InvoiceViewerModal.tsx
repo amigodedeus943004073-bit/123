@@ -20,6 +20,7 @@ import {
   getInvoiceStatusLabel,
 } from '../utils/formatters';
 import { shareViaWhatsApp, formatInvoiceWhatsApp } from '../utils/whatsapp';
+import { SMVMLogo } from './SMVMLogo';
 
 interface InvoiceViewerModalProps {
   isOpen: boolean;
@@ -146,10 +147,8 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               {/* Emitter Info */}
               <div className="space-y-1 max-w-sm">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-sm tracking-wider">
-                    SM
-                  </div>
+                <div className="flex items-center gap-3">
+                  <SMVMLogo size="lg" />
                   <div>
                     <h1 className="text-base font-extrabold text-slate-900 tracking-tight leading-tight">
                       {invoice.emitter.name}
@@ -225,25 +224,16 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
             <div className="text-[10px] uppercase font-extrabold tracking-wider text-slate-400 mb-1.5">
               Exmo.(s) Sr.(s) / Destinatário:
             </div>
-            <div className="flex flex-col sm:flex-row justify-between gap-2">
-              <div>
-                <h3 className="text-sm font-bold text-slate-900">{invoice.client.name}</h3>
-                <p className="text-xs font-semibold text-slate-600 mt-0.5">
-                  NIF / CNPJ / CPF: <span className="font-mono text-slate-800">{invoice.client.taxId}</span>
+            <div>
+              <h3 className="text-base font-bold text-slate-900">{invoice.client.name}</h3>
+              <p className="text-xs font-semibold text-slate-600 mt-1">
+                NIF: <span className="font-mono text-slate-900 font-bold">{invoice.client.taxId || 'Consumidor Final'}</span>
+              </p>
+              {invoice.client.address && (
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {invoice.client.address}
+                  {invoice.client.city && ` - ${invoice.client.city}`}
                 </p>
-                {invoice.client.address && (
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {invoice.client.address}
-                    {invoice.client.city && ` - ${invoice.client.city}`}
-                  </p>
-                )}
-              </div>
-
-              {(invoice.client.email || invoice.client.phone) && (
-                <div className="text-xs text-slate-500 sm:text-right space-y-0.5">
-                  {invoice.client.email && <div>E-mail: {invoice.client.email}</div>}
-                  {invoice.client.phone && <div>Tel: {invoice.client.phone}</div>}
-                </div>
               )}
             </div>
           </div>
@@ -253,12 +243,10 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
             <table className="w-full text-xs text-left border border-slate-200">
               <thead className="bg-slate-100 text-slate-800 border-b border-slate-200 font-bold uppercase tracking-wider text-[11px]">
                 <tr>
-                  <th className="py-2.5 px-3">Item / Descrição</th>
-                  <th className="py-2.5 px-3 text-center w-16">Qtd</th>
-                  <th className="py-2.5 px-3 text-right w-28">Preço Unit.</th>
-                  <th className="py-2.5 px-3 text-center w-20">Desc. %</th>
-                  <th className="py-2.5 px-3 text-center w-20">Taxa IVA</th>
-                  <th className="py-2.5 px-3 text-right w-32">Valor Total</th>
+                  <th className="py-2.5 px-3">Produto / Serviço</th>
+                  <th className="py-2.5 px-3 text-center w-24">Quantidade</th>
+                  <th className="py-2.5 px-3 text-right w-36">Preço Unitário</th>
+                  <th className="py-2.5 px-3 text-right w-40">Valor Total</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 bg-white">
@@ -267,15 +255,11 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
                     <td className="py-3 px-3">
                       <div className="font-semibold text-slate-900">{it.description}</div>
                     </td>
-                    <td className="py-3 px-3 text-center font-mono">{it.quantity}</td>
+                    <td className="py-3 px-3 text-center font-mono font-bold text-slate-800">
+                      {it.quantity}
+                    </td>
                     <td className="py-3 px-3 text-right font-mono">
                       {formatInvoiceCurrency(it.unitPrice, invoice.currency)}
-                    </td>
-                    <td className="py-3 px-3 text-center font-mono">
-                      {it.discountPercent > 0 ? `${it.discountPercent}%` : '-'}
-                    </td>
-                    <td className="py-3 px-3 text-center font-mono">
-                      {it.taxRate > 0 ? `${it.taxRate}%` : '0% (Isento)'}
                     </td>
                     <td className="py-3 px-3 text-right font-mono font-bold text-slate-900">
                       {formatInvoiceCurrency(it.total, invoice.currency)}
@@ -291,23 +275,24 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
             {/* Legal terms & payment info */}
             <div className="sm:col-span-7 space-y-3">
               <div className="border border-slate-200 rounded-xl p-3.5 bg-slate-50/70 text-xs">
-                <span className="font-bold text-slate-800 block mb-1 flex items-center gap-1.5">
+                <span className="font-bold text-slate-800 block mb-1.5 flex items-center gap-1.5">
                   <CreditCard className="w-3.5 h-3.5 text-blue-600" />
-                  Coordenadas para Pagamento & Liquidação:
+                  Coordenadas para Pagamento & Transferência:
                 </span>
-                <p className="text-slate-600">
-                  <strong>Banco:</strong> {invoice.emitter.bankName}
+                <p className="text-slate-700">
+                  <strong>Banco:</strong> {invoice.emitter.bankName || 'Banco BAI'}
                 </p>
-                <p className="text-slate-600 font-mono text-[11px] mt-0.5">
-                  <strong>Conta / IBAN:</strong> {invoice.emitter.ibanOrAccount}
+                <p className="text-slate-700 font-mono text-[11px] mt-0.5">
+                  <strong>IBAN:</strong> {invoice.emitter.ibanOrAccount || 'AO06 0040 0000 8953 6571 101 24'}
                 </p>
-                {invoice.emitter.swiftOrPix && (
-                  <p className="text-slate-600 font-mono text-[11px] mt-0.5">
-                    <strong>{invoice.emitter.swiftOrPix}</strong>
-                  </p>
-                )}
-                <p className="text-slate-600 text-[11px] mt-0.5">
-                  <strong>Beneficiário:</strong> {invoice.emitter.name}
+                <p className="text-slate-700 font-mono text-[11px] mt-0.5">
+                  <strong>Para Transferência BAI:</strong> 0040 0000 89536571101 24
+                </p>
+                <p className="text-slate-700 text-[11px] mt-0.5">
+                  <strong>Titular / Beneficiário:</strong> Salomão Muanjita
+                </p>
+                <p className="text-slate-700 font-mono text-[11px] mt-0.5">
+                  <strong>Multicaixa Express:</strong> 943004073
                 </p>
               </div>
 
@@ -327,8 +312,8 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
             {/* Totals Table */}
             <div className="sm:col-span-5 border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2 text-xs">
               <div className="flex justify-between text-slate-600">
-                <span>Total Ilíquido (Subtotal):</span>
-                <span className="font-mono">{formatInvoiceCurrency(invoice.subtotal, invoice.currency)}</span>
+                <span>Total dos Produtos:</span>
+                <span className="font-mono font-bold text-slate-800">{formatInvoiceCurrency(invoice.subtotal, invoice.currency)}</span>
               </div>
 
               {invoice.totalDiscount > 0 && (
@@ -338,10 +323,12 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
                 </div>
               )}
 
-              <div className="flex justify-between text-slate-600">
-                <span>Total Impostos (IVA):</span>
-                <span className="font-mono">{formatInvoiceCurrency(invoice.totalTax, invoice.currency)}</span>
-              </div>
+              {invoice.totalTax > 0 && (
+                <div className="flex justify-between text-slate-600">
+                  <span>Imposto (IVA):</span>
+                  <span className="font-mono">{formatInvoiceCurrency(invoice.totalTax, invoice.currency)}</span>
+                </div>
+              )}
 
               {invoice.withholdingTaxAmount > 0 && (
                 <div className="flex justify-between text-rose-600">
@@ -352,11 +339,11 @@ export const InvoiceViewerModal: React.FC<InvoiceViewerModalProps> = ({
                 </div>
               )}
 
-              <div className="border-t-2 border-slate-900 pt-2 flex justify-between items-baseline">
+              <div className="border-t-2 border-slate-900 pt-2.5 flex justify-between items-baseline">
                 <span className="font-black text-xs uppercase tracking-tight text-slate-900">
-                  Total Líquido a Pagar:
+                  VALOR TOTAL A PAGAR:
                 </span>
-                <span className="font-black font-mono text-base text-blue-700">
+                <span className="font-black font-mono text-lg text-blue-700">
                   {formatInvoiceCurrency(invoice.totalAmount, invoice.currency)}
                 </span>
               </div>

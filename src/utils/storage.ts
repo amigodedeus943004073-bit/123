@@ -19,19 +19,58 @@ import {
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  ACCOUNTS: 'smvm_finance_accounts_v1',
-  CATEGORIES: 'smvm_finance_categories_v1',
-  COST_CENTERS: 'smvm_finance_cost_centers_v1',
-  TRANSACTIONS: 'smvm_finance_transactions_v1',
-  AUTOMATIONS: 'smvm_finance_automations_v1',
-  INVOICES: 'smvm_finance_invoices_v1',
-  EMITTER_SETTINGS: 'smvm_finance_emitter_settings_v1',
+  ACCOUNTS: 'smvm_finance_accounts_v2',
+  CATEGORIES: 'smvm_finance_categories_v2',
+  COST_CENTERS: 'smvm_finance_cost_centers_v2',
+  TRANSACTIONS: 'smvm_finance_transactions_v2',
+  AUTOMATIONS: 'smvm_finance_automations_v2',
+  INVOICES: 'smvm_finance_invoices_v2',
+  EMITTER_SETTINGS: 'smvm_finance_emitter_settings_v2',
 };
+
+// Automatic one-time cleanup of old v1 demo values to ensure all accounts and transactions are zeroed
+if (typeof window !== 'undefined') {
+  try {
+    const migrated = localStorage.getItem('smvm_zeroed_clean_v2');
+    if (!migrated) {
+      // Clear previous v1 keys that contained dummy transactions & non-zero balances
+      const oldKeys = [
+        'smvm_finance_accounts_v1',
+        'smvm_finance_categories_v1',
+        'smvm_finance_cost_centers_v1',
+        'smvm_finance_transactions_v1',
+        'smvm_finance_automations_v1',
+        'smvm_finance_invoices_v1',
+      ];
+      oldKeys.forEach((k) => localStorage.removeItem(k));
+      localStorage.setItem('smvm_zeroed_clean_v2', 'true');
+    }
+  } catch (e) {
+    // ignore
+  }
+}
 
 export const getSavedAccounts = (): Account[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.ACCOUNTS);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed: Account[] = JSON.parse(raw);
+      // Ensure BAI account coordinates are up to date
+      const updated = parsed.map((acc) => {
+        if (acc.id === 'acc-1' || acc.bankName === 'Banco BAI') {
+          return {
+            ...acc,
+            name: 'Conta Corrente BAI - Salomão Muanjita',
+            bankName: 'Banco BAI',
+            accountNumber: 'AO06 0040 0000 8953 6571 101 24',
+            description:
+              'Para Transferências BAI: 0040 0000 89536571101 24 • Titular: Salomão Muanjita • Multicaixa Express: 943004073',
+          };
+        }
+        return acc;
+      });
+      return updated;
+    }
   } catch (e) {
     console.error('Error loading accounts from storage', e);
   }
@@ -90,7 +129,12 @@ export const saveTransactions = (transactions: Transaction[]) => {
 export const getSavedAutomations = (): AutomationRule[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.AUTOMATIONS);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.filter((r: AutomationRule) => r && !String(r.id).startsWith('auto-'));
+      }
+    }
   } catch (e) {
     console.error('Error loading automations from storage', e);
   }
@@ -118,7 +162,24 @@ export const saveInvoices = (invoices: Invoice[]) => {
 export const getSavedEmitterSettings = (): InvoiceEmitter => {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.EMITTER_SETTINGS);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (
+        parsed.taxId === '5401234567' ||
+        !parsed.taxId ||
+        parsed.name === 'EMPRESA SMVM' ||
+        !parsed.name.includes('Salomão') ||
+        !parsed.ibanOrAccount?.includes('8953')
+      ) {
+        const updated = {
+          ...parsed,
+          ...INITIAL_EMITTER_SETTINGS,
+        };
+        localStorage.setItem(STORAGE_KEYS.EMITTER_SETTINGS, JSON.stringify(updated));
+        return updated;
+      }
+      return parsed;
+    }
   } catch (e) {
     console.error('Error loading emitter settings from storage', e);
   }
@@ -137,6 +198,16 @@ export const resetToInitialData = () => {
   localStorage.removeItem(STORAGE_KEYS.AUTOMATIONS);
   localStorage.removeItem(STORAGE_KEYS.INVOICES);
   localStorage.removeItem(STORAGE_KEYS.EMITTER_SETTINGS);
+};
+
+export const zeroAllFinances = () => {
+  const zeroedAccounts = INITIAL_ACCOUNTS.map((acc) => ({ ...acc, initialBalance: 0.0 }));
+  const zeroedCategories = INITIAL_CATEGORIES.map((cat) => ({ ...cat, monthlyBudget: 0 }));
+  saveAccounts(zeroedAccounts);
+  saveCategories(zeroedCategories);
+  saveTransactions([]);
+  saveInvoices([]);
+  saveAutomations([]);
 };
 
 // Calculate account balance dynamically

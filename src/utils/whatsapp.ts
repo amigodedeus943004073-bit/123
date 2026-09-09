@@ -134,10 +134,12 @@ export const formatInvoiceWhatsApp = (
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
 
   if (invoice.emitter.bankName || invoice.emitter.ibanOrAccount || invoice.emitter.swiftOrPix) {
-    msg += `\n🏦 *DADOS PARA PAGAMENTO:*\n`;
+    msg += `\n🏦 *DADOS PARA TRANSFERÊNCIA & PAGAMENTO:*\n`;
     if (invoice.emitter.bankName) msg += `• Banco: ${invoice.emitter.bankName}\n`;
-    if (invoice.emitter.ibanOrAccount) msg += `• Conta / IBAN: ${invoice.emitter.ibanOrAccount}\n`;
-    if (invoice.emitter.swiftOrPix) msg += `• Chave PIX: ${invoice.emitter.swiftOrPix}\n`;
+    if (invoice.emitter.ibanOrAccount) msg += `• IBAN: ${invoice.emitter.ibanOrAccount}\n`;
+    msg += `• Para Transferência BAI: 0040 0000 89536571101 24\n`;
+    msg += `• Titular: Salomão Muanjita\n`;
+    msg += `• Multicaixa Express: 943004073\n`;
   }
 
   if (includeVerse && verse) {
